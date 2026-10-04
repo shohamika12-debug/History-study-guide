@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civics & Philosophy Study Hub ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf6f0;
+            --card-bg: #ffffff;
+            --accent-pink: #f8c8dc;
+            --accent-lavender: #dcd6f7;
+            --accent-mint: #c1e7e3;
+            --accent-peach: #fbe7c6;
+            --text-dark: #4a4e69;
+            --text-muted: #72778e;
+            --primary-btn: #b5e2fa;
+            --primary-btn-hover: #9cd5f4;
+            --correct-bg: #d4edda;
+            --correct-text: #155724;
+            --incorrect-bg: #f8d7da;
+            --incorrect-text: #721c24;
+            --border-radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.3rem;
+            color: #6c5ce7;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px var(--accent-pink);
+        }
+
+        header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent-lavender);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            background-color: var(--accent-lavender);
+        }
+
+        .tab-btn.active {
+            background-color: #6c5ce7;
+            color: white;
+            border-color: #6c5ce7;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .category-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .category-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.04);
+            border: 2px solid var(--accent-peach);
+        }
+
+        .section-card h2 {
+            font-family: 'Fredoka One', cursive;
+            color: #d63031;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed var(--accent-peach);
+            padding-bottom: 8px;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .vocab-item {
+            background-color: #fff9e6;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border-left: 4px solid #fdcb6e;
+        }
+
+        .vocab-item strong {
+            display: block;
+            color: #d63031;
+            margin-bottom: 4px;
+        }
+
+        .qa-box {
+            background-color: #f0f3ff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 12px;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        .qa-box p.question {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.04);
+            border: 2px solid var(--accent-mint);
+        }
+
+        .question-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .options-list {
+            list-style: none;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .option-btn:hover {
+            background-color: var(--accent-mint);
+            border-color: #81ecec;
+        }
+
+        .option-btn.selected-correct {
+            background-color: var(--correct-bg) !important;
+            color: var(--correct-text);
+            border-color: #28a745 !important;
+        }
+
+        .option-btn.selected-incorrect {
+            background-color: var(--incorrect-bg) !important;
+            color: var(--incorrect-text);
+            border-color: #dc3545 !important;
+        }
+
+        .feedback-text {
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .practice-test-card {
+            background: #fff;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border: 2px solid var(--accent-pink);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.04);
+        }
+
+        .submit-btn {
+            background-color: #fd79a8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0 auto;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(253, 121, 168, 0.4);
+        }
+
+        .submit-btn:hover {
+            background-color: #e84393;
+            transform: scale(1.03);
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #6c5ce7;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .essay-box {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            border: 2px solid var(--accent-lavender);
+            padding: 12px;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-top: 10px;
+        }
+
+        .essay-box:focus {
+            outline: none;
+            border-color: #6c5ce7;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>✨ Philosophy of Government Study Hub ✨</h1>
+        <p>Interactive study guide built from your review materials[cite: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
+    </header>
+
+    <nav>
+        <button class="tab-btn active" onclick="switchTab('part1')">Part 1: Human Nature</button>
+        <button class="tab-btn" onclick="switchTab('part2')">Part 2: Forms of Gov</button>
+        <button class="tab-btn" onclick="switchTab('part3')">Part 3: Republican Gov</button>
+        <button class="tab-btn" onclick="switchTab('part4')">Part 4: Limiting Gov</button>
+        <button class="tab-btn" onclick="switchTab('test')">📝 Full Practice Test</button>
+    </nav>
+
+    <div class="container">
+
+        <!-- PART 1 -->
+        <div id="part1" class="category-content active">
+            <div class="section-card">
+                <h2>P.O.G. Part 2: Locke & Hobbes and Human Nature[cite: 4]</h2>
+                <div class="vocab-grid">
+                    <div class="vocab-item">
+                        <strong>State of Nature[cite: 4]</strong>
+                        A hypothetical state where there are no laws, governments, or rules[cite: 10]. People have complete freedom but no guaranteed protection[cite: 9, 10].
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Social Contract[cite: 4]</strong>
+                        An agreement where citizens give up some freedoms in exchange for protection from the government[cite: 8, 9, 10].
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Sovereign[cite: 4]</strong>
+                        A supreme ruler or ultimate authority holding political power[cite: 10].
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Tabula Rasa[cite: 4]</strong>
+                        John Locke's idea that people are born with a "blank slate" and shaped by experiences[cite: 2, 4].
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Natural Rights[cite: 4]</strong>
+                        Fundamental rights all human beings are born with (such as life, liberty, and property)[cite: 2, 4, 9].
+                    </div>
+                </div>
+
+                <div class="qa-box">
+                    <p class="question">1) What were Hobbes' and Locke's beliefs about human nature?[cite: 4]</p>
+                    <p>Hobbes believed people were naturally selfish and chaotic in a state of nature[cite: 4]. Locke believed people were born as a blank slate (Tabula Rasa) and possessed natural rights[cite: 2, 4].</p>
+                </div>
+                <div class="qa-box">
+                    <p class="question">2) Why did they believe government was necessary?[cite: 4]</p>
+                    <p>To prevent chaos and protect people, their rights, and property from others[cite: 4, 9].</p>
+                </div>
+                <div class="qa-box">
+                    <p class="question">3) What did each believe was the purpose/job of government?[cite: 4]</p>
+                    <p>Hobbes felt government needed total control to maintain order[cite: 4, 10]. Locke believed government existed solely to protect natural rights and serve the public[cite: 2, 4].</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 2 -->
+        <div id="part2" class="category-content">
+            <div class="section-card">
+                <h2>P.O.G. Part 3: Types of Government[cite: 4]</h2>
+                <div class="vocab-grid">
+                    <div class="vocab-item"><strong>Autocracy[cite: 10]:</strong> One person holds all power (Monarchy or Dictatorship)[cite: 10].</div>
+                    <div class="vocab-item"><strong>Monarchy[cite: 4, 10]:</strong> King/Queen rules through family lineage[cite: 10].</div>
+                    <div class="vocab-item"><strong>Dictatorship[cite: 4, 10]:</strong> Single leader has absolute control over citizens' lives[cite: 10].</div>
+                    <div class="vocab-item"><strong>Oligarchy[cite: 4, 10]:</strong> Small group of people holds all political power[cite: 10].</div>
+                    <div class="vocab-item"><strong>Theocracy[cite: 4, 10]:</strong> Government recognizing God or divine authority as supreme rule[cite: 10].</div>
+                    <div class="vocab-item"><strong>Anarchy[cite: 4, 10]:</strong> Nobody is in control (or everyone is)[cite: 10].</div>
+                    <div class="vocab-item"><strong>Direct Democracy[cite: 4, 10]:</strong> Citizens directly make laws and decisions[cite: 3, 6, 10].</div>
+                    <div class="vocab-item"><strong>Representative Democracy[cite: 4, 10]:</strong> Citizens elect leaders to make laws and govern[cite: 3, 6, 10].</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 3 -->
+        <div id="part3" class="category-content">
+            <div class="section-card">
+                <h2>Lesson 3: What is Republican Government?[cite: 3, 7]</h2>
+                <div class="vocab-grid">
+                    <div class="vocab-item"><strong>Civic Virtue[cite: 3, 7]:</strong> Putting aside personal self-interests for the good of the community/country[cite: 2, 5, 6].</div>
+                    <div class="vocab-item"><strong>Common Good[cite: 2, 3, 7]:</strong> Whatever helps the whole community rather than just one person[cite: 2, 5, 7].</div>
+                    <div class="vocab-item"><strong>Delegate[cite: 3, 7]:</strong> A representative chosen by citizens to act on their behalf[cite: 3, 6, 7].</div>
+                    <div class="vocab-item"><strong>Faction[cite: 3, 7]:</strong> Groups of interest that could divide citizens in a large republic[cite: 6].</div>
+                    <div class="vocab-item"><strong>Republic[cite: 3, 7]:</strong> A country where power is held by citizens electing representatives[cite: 6, 7].</div>
+                </div>
+
+                <div class="qa-box">
+                    <p class="question">How did colonists teach civic virtue?[cite: 5, 8]</p>
+                    <p>Parents taught children at home, teachers taught at school, through stories, and by designing public buildings similarly to ancient Roman buildings[cite: 2, 5].</p>
+                </div>
+                <div class="qa-box">
+                    <p class="question">Example of Civic Virtue: Cincinnatus[cite: 2, 6]</p>
+                    <p>Cincinnatus led Rome to victory in battle, gave up his dictator/military power, and returned to farming[cite: 2, 6].</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 4 -->
+        <div id="part4" class="category-content">
+            <div class="section-card">
+                <h2>P.O.G. Part 4: Limiting Government[cite: 3, 9]</h2>
+                <div class="vocab-grid">
+                    <div class="vocab-item"><strong>Constitution[cite: 3, 9]:</strong> Rulebook for government; explains how laws are made and limits government power[cite: 1, 9].</div>
+                    <div class="vocab-item"><strong>Rule of Law[cite: 1, 3, 9]:</strong> Everyone, including government leaders and the president, must follow the law[cite: 1, 9].</div>
+                    <div class="vocab-item"><strong>Minority Rights[cite: 1, 3, 9]:</strong> Protection of small or unpopular groups so the majority cannot treat them unfairly[cite: 1, 9].</div>
+                    <div class="vocab-item"><strong>Consent of the Governed[cite: 1, 3, 9]:</strong> Citizens give permission to be governed by exercising their right to vote[cite: 1, 9].</div>
+                    <div class="vocab-item"><strong>Separation of Powers[cite: 1, 3, 9]:</strong> Dividing government authority among branches (legislative, executive, judicial)[cite: 1, 9].</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRACTICE TEST TAB -->
+        <div id="test" class="category-content">
+            <div class="practice-test-card">
+                <h2 style="font-family: 'Fredoka One', cursive; color: #6c5ce7; margin-bottom: 20px;">Multiple Choice Practice Exam[cite: 1, 2, 3, 4]</h2>
+                <form id="quizForm">
+
+                    <div class="question-card">
+                        <h3>1. Why is it important for a country to limit the power of its government?[cite: 1]</h3>
+                        <div class="options-list">
+                            <button type="button" class="option-btn" onclick="selectAnswer(1, 'A', false)">A. To guarantee government leaders can make decisions without delays[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(1, 'B', false)">B. To ensure government has full control over all laws[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(1, 'C', true)">C. To prevent leaders from abusing their power and mistreating citizens[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(1, 'D', false)">D. To eliminate the need for citizens to participate in elections[cite: 1]</button>
+                        </div>
+                        <div id="feedback-1" class="feedback-text"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>2. Which statement best describes the purpose of a constitution?[cite: 1]</h3>
+                        <div class="options-list">
+                            <button type="button" class="option-btn" onclick="selectAnswer(2, 'A', false)">A. It is a list of laws written exclusively by a single dictator[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(2, 'B', true)">B. It acts as a rulebook that explains how a government functions and how laws are made[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(2, 'C', false)">C. It gives government officials authority to ignore existing regulations[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(2, 'D', false)">D. It prevents citizens from changing any existing government policies[cite: 1]</button>
+                        </div>
+                        <div id="feedback-2" class="feedback-text"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>3. What does the principle "rule of law" mean in a government system?[cite: 1]</h3>
+                        <div class="options-list">
+                            <button type="button" class="option-btn" onclick="selectAnswer(3, 'A', false)">A. Only ordinary citizens must follow the laws passed by government[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(3, 'B', false)">B. Government leaders have the right to change laws whenever they choose[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(3, 'C', true)">C. Everyone, including government leaders and the president, must follow the law[cite: 1]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(3, 'D', false)">D. Judges are the only people required to obey the country's rules[cite: 1]</button>
+                        </div>
+                        <div id="feedback-3" class="feedback-text"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>4. How do your notes define the term "common good"?[cite: 2]</h3>
+                        <div class="options-list">
+                            <button type="button" class="option-btn" onclick="selectAnswer(4, 'A', false)">A. Individual freedoms protected by law[cite: 2]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(4, 'B', true)">B. Whatever helps the whole community rather than just one person[cite: 2]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(4, 'C', false)">C. Total money gathered by government[cite: 2]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(4, 'D', false)">D. Agreement where different groups split power evenly[cite: 2]</button>
+                        </div>
+                        <div id="feedback-4" class="feedback-text"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>5. Why is Cincinnatus remembered as a clear example of civic virtue?[cite: 2]</h3>
+                        <div class="options-list">
+                            <button type="button" class="option-btn" onclick="selectAnswer(5, 'A', false)">A. He wrote the first set of written laws for Roman Republic[cite: 2]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(5, 'B', false)">B. He took complete control of Rome as emperor for life[cite: 2]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(5, 'C', true)">C. He led Rome to victory in battle, gave up his military power, and returned to farming[cite: 2]</button>
+                            <button type="button" class="option-btn" onclick="selectAnswer(5, 'D', false)">D. He led a revolt that gave common citizens control over rich landowners[cite: 2]</button>
+                        </div>
+                        <div id="feedback-5" class="feedback-text"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>✍️ Open-Ended Practice Option[cite: 4, 5]</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 8px;"><strong>Question:</strong> What is civic virtue? Why is it important that citizens and representatives have civic virtue? Give an example.[cite: 3, 5]</p>
+                        <textarea class="essay-box" placeholder="Write your practice response paragraph here..."></textarea>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Civics Exam Study Tool • Created for exam prep success! ⭐</p>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            const contents = document.querySelectorAll('.category-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function selectAnswer(qNum, option, isCorrect) {
+            const parentCard = document.querySelectorAll('.question-card')[qNum - 1];
+            const buttons = parentCard.querySelectorAll('.option-btn');
+            const feedback = parentCard.querySelector('.feedback-text');
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('selected-correct', 'selected-incorrect');
+            });
+
+            const selectedBtn = event.currentTarget;
+            if (isCorrect) {
+                selectedBtn.classList.add('selected-correct');
+                feedback.textContent = "✨ Correct! Awesome job!";
+                feedback.style.color = "var(--correct-text)";
+            } else {
+                selectedBtn.classList.add('selected-incorrect');
+                feedback.textContent = "❌ Oops, that's incorrect. Review this section!";
+                feedback.style.color = "var(--incorrect-text)";
+            }
+            feedback.style.display = "block";
+        }
+    </script>
+</body>
+</html>
